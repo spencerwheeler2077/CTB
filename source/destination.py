@@ -10,10 +10,10 @@ class Destination:
         for i in args:
             self.pointers.append(i)
 
-    def giveLocation(self):
+    def getLocation(self):
         return self.x, self.y
 
-    def adjustLocation(self, x, y):
+    def adjustedLocation(self, x, y):
         return self.x+x, self.y+y
 
 
