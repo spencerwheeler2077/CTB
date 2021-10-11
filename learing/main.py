@@ -3,6 +3,7 @@ import os, sys
 
 def load_image(name, colorKey=None):
     fullname = os.path.join(name)
+    print(fullname)
     try:
         image = pygame.image.load(fullname)
     except pygame.error as message:
