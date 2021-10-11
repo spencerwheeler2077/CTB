@@ -15,10 +15,10 @@ pygame.display.set_mode((x, y))
 pygame.display.set_caption('map')
 
 
-pawn1 = Pawn.Pawn('resource/yellowpawn.png', (150, 250))
-pawn2 = Pawn.Pawn('resource/bluepawn.png', (30, 50))
+pawn1 = Pawn.Pawn('resource/yellowpawn.png', (615, 70))
+pawn2 = Pawn.Pawn('resource/bluepawn.png', (620, 50))
 grid = Pawn.Grid('resource/grid.png')
-allSprites = pygame.sprite.RenderPlain((pawn2, pawn1))
+allSprites = pygame.sprite.RenderPlain((pawn2, pawn1, grid))
 
 while True:
 
