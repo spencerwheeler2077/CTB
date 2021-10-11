@@ -1,7 +1,10 @@
 import pygame
 import Pawn
+import DestinationFactory
+
 pygame.init()
 white = (255, 255, 255)
+
 
 x = 1500
 y = 830
@@ -17,8 +20,7 @@ pygame.display.set_caption('map')
 
 pawn1 = Pawn.Pawn('resource/yellowpawn.png', (615, 70))
 pawn2 = Pawn.Pawn('resource/bluepawn.png', (620, 50))
-grid = Pawn.Grid('resource/grid.png')
-allSprites = pygame.sprite.RenderPlain((pawn2, pawn1, grid))
+allSprites = pygame.sprite.RenderPlain((pawn2, pawn1))
 
 while True:
 
