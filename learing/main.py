@@ -1,5 +1,6 @@
 import pygame
 import os, sys
+import pygame_widgets
 
 def load_image(name, colorKey=None):
     fullname = os.path.join(name)
