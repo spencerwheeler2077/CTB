@@ -1,3 +1,4 @@
+import random
 
 
 class DestinationDeck():
@@ -7,9 +8,13 @@ class DestinationDeck():
         file = open(filepath)
         for line in file:
             self.deck.append(line.strip('\n'))
+        random.shuffle(self.deck)
 
     def pop(self):
+        if len(self.deck) == 0:
+            return ''
         return self.deck.pop()
+
 
 class Hand():
     def __init__(self):

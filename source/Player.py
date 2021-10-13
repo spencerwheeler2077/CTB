@@ -9,7 +9,7 @@ class Player:
         self.adjustY = adjustments[1]
         self.pawn = Pawn.Pawn(pawnimage, location.adjustedLocation(self.adjustX, self.adjustY))
         self.location = location
-        self.hand = Hand.Hand()
+        self.deck = Hand.Hand()
         self.name = name
         self.rollCount = 0
         self.hasRolled = False
@@ -22,14 +22,14 @@ class Player:
         self.pawn.move(self.location.adjustedLocation(self.adjustX, self.adjustY))
 
     def roll(self):
-        if self.hasRolled == False:
-            self.rollCount = random.randint(1, 6)
+        if not self.hasRolled:
+            self.rollCount = random.randint(30, 60)
             self.hasRolled = True
         else:
             return self.rollCount
 
     def reset(self):
         self.hasRolled = False
-        self.rollCount = 0
+        self.rollCount = 100
 
 

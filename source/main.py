@@ -7,9 +7,10 @@ from myButton import CTBGButton as Button
 pygame.init()
 pygame.font.init()
 
-FONT = pygame.font.SysFont(None, 40)
+FONT = pygame.font.SysFont("Timeless", 40)
 WHITE = (255, 255, 255)
 
+NUMPLAYERS = 1
 WINDOW_X = 1500
 WINDOW_Y = 830
 PANEL_COLOR = (198, 218, 200)
@@ -29,7 +30,7 @@ AdjustmentList = [[-9, -6], [-9, 6], [0, -6], [0, 6], [9, -6], [9, 6]]
 allSprites = pygame.sprite.RenderPlain()
 playerList = []
 
-for i in range(6):
+for i in range(NUMPLAYERS):
     newPlayer = Player.Player(f"Player {i+1}", pawnImages[i], DestinationFactory.NorthPole, AdjustmentList[i])
     allSprites.add(newPlayer.pawn)
     playerList.append(newPlayer)
@@ -42,7 +43,7 @@ PANEL_LEN = 650
 PANEL_HEIGHT = 190
 
 pygame.draw.rect(background, (0, 0, 0), (PANEL_X, PANEL_Y, PANEL_LEN, PANEL_HEIGHT))
-pygame.draw.rect(background, PANEL_COLOR, (PANEL_X + 3, PANEL_Y + 3, PANEL_LEN-4, PANEL_HEIGHT-4))
+pygame.draw.rect(background, PANEL_COLOR, (PANEL_X + 3, PANEL_Y + 3, PANEL_LEN-6, PANEL_HEIGHT-6))
 
 buttonX = PANEL_X + 5
 buttonTop = PANEL_Y + 20
@@ -99,7 +100,6 @@ def updateRollView(player, surface):
     background.blit(surface, (PANEL_X + buttonWidth + 30, PANEL_Y + 40))
 
 
-
 rollView = pygame.Surface((50, 50))
 
 
@@ -109,6 +109,45 @@ rollButton.setOnClick(rollButtonFunc)
 
 desButColDis = (100, 100, 100)
 activeButtonCol = (220, 220, 220)
+
+HAND_FONT = pygame.font.SysFont("Timeless", 30)
+
+Complete = pygame.event.Event(pygame.USEREVENT, attr1='COMPLETE')
+
+
+def finishButtonFun():
+
+    pygame.event.post(Complete)
+    pygame.event.post(EndTurn)
+
+
+finishButton = Button(background, PANEL_X + buttonWidth + 170, PANEL_Y + PANEL_HEIGHT - 30, 150, 25)
+finishButton.setString("Complete Destination")
+finishButton.setOnClick(finishButtonFun)
+
+def updateComplete(player):
+
+    for j in range(3):
+        if player.location.name == player.deck.hand[j]:
+            finishButton.enable()
+            return
+        else:
+            finishButton.disable()
+
+
+
+def updateDestinationView(player, surface):
+
+    surface.fill((170, 140, 130))
+    text1 = HAND_FONT.render(f"{player.deck.hand[0]}", False, (0, 0, 0))
+    text2 = HAND_FONT.render(f"{player.deck.hand[1]}", False, (0, 0, 0))
+    text3 = HAND_FONT.render(f"{player.deck.hand[2]}", False, (0, 0, 0))
+    surface.blit(text1, (5, 10))
+    surface.blit(text2, (5, 40))
+    surface.blit(text3, (5, 70))
+    background.blit(surface, (PANEL_X + PANEL_LEN - 275, PANEL_Y + 15))
+
+
 def updateDesButtons(numPlayer, List):
 
     Pointers = numPlayer.location.pointers
@@ -137,7 +176,6 @@ def updateName(numPlayer, surface):
     background.blit(surface, (PANEL_X + buttonWidth + 20, PANEL_Y + 10))
 
 
-
 Event1 = pygame.event.Event(pygame.USEREVENT, attr1='DES1')
 Event2 = pygame.event.Event(pygame.USEREVENT, attr1='DES2')
 Event3 = pygame.event.Event(pygame.USEREVENT, attr1='DES3')
@@ -148,6 +186,7 @@ i = 0
 Player = playerList[i]
 updateDesButtons(Player, buttonList)
 playerNameText = pygame.Surface((150, 30))  # these numbers here are the dimensions of the text surface
+handView = pygame.Surface((270, 100))
 updateName(Player, playerNameText)
 
 
@@ -180,20 +219,26 @@ while True:
                 Player.reset()
                 playerList[i] = Player
 
-                if i == 5:
+                if i == NUMPLAYERS-1:
                     i = -1
 
                 i += 1
                 Player = playerList[i]
 
-
             if event.attr1 == 'ROLL':
                 roll(Player)
 
+            if event.attr1 == 'COMPLETE':
+                for p in  range(3):
+                    if Player.deck.hand[p]== Player.location.name:
+                        Player.deck.hand[p] = Player.deck.deck.pop()
+                        print('hi')
 
             updateDesButtons(Player, buttonList)
             updateName(Player, playerNameText)
             updateRollView(Player, rollView)
+            updateDestinationView(Player, handView)
+            updateComplete(Player)
 
     pygame_widgets.update(events)
     pygame.display.update()
