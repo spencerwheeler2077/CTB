@@ -17,6 +17,6 @@ class Destination:
         return self.x+x, self.y+y
 
     def getDirection(self, index):
-        return self.pointers[index].destination
+        return self.pointers[index].destination, self.pointers[index].distance
 
 

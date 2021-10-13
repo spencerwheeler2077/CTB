@@ -5,9 +5,11 @@ class CTBGButton(Button):
         super().__init__(surface, leftPos, topPos, length, height)
         self.number = number
 
+
     def setString(self, newString):
         self.string = newString
         self.text = self.font.render(self.string, True, self.textColour)
+
 
 
 

@@ -17,3 +17,8 @@ class Hand():
         self.deck = DestinationDeck()
         for i in range(3):
             self.hand.append(self.deck.pop())
+
+    def addToHand(self):
+        if len(self.hand)<3:
+            self.hand.append(self.deck.pop())
+

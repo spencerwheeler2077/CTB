@@ -3,8 +3,6 @@ import Pointers
 
 
 
-
-
 NorthPole = destination.Destination(660, 50, "North Pole")
 
 AnnArbor = destination.Destination(275, 305, "Ann Arbor, Michigan")
@@ -24,7 +22,7 @@ London = destination.Destination(625, 250, "London, England")
 Iceland = destination.Destination(560, 180, "Reykjavik, Iceland")
 
 Cairo = destination.Destination(760, 375, "Cairo, Egypt")
-Mombasa = destination.Destination(820, 620, "Mombasa, Kenya")
+Mombasa = destination.Destination(825, 515, "Mombasa, Kenya")
 Abidjan = destination.Destination(605, 490, "Abidjan, Cote d'Ivoire")
 CapeTown = destination.Destination(725, 697, "Cape Town, South Africa")
 Madagascar = destination.Destination(845, 640, "Antananarvio, Madagascar")
@@ -32,9 +30,9 @@ Madagascar = destination.Destination(845, 640, "Antananarvio, Madagascar")
 Moscow = destination.Destination(800, 225, "Moscow, Russia")
 Astana = destination.Destination(920, 275, "Astana, Kazakhstan")
 India = destination.Destination(995, 455, "Bangalore, India")
-China = destination.Destination(990, 370, "Xian, China")
+China = destination.Destination(1090, 370, "Xian, China")
 Tokyo = destination.Destination(1260, 330, "Tokyo, Japan")
-Manila = destination.Destination(1210, 550, "Manila, Philippines")
+Manila = destination.Destination(1215, 456, "Manila, Philippines")
 Sydney = destination.Destination(1310, 710, "Sydney, Australia")
 Hawaii = destination.Destination(1390, 415, "Honolulu, Hawaii")
 
@@ -51,7 +49,7 @@ Villa.addPointers(Pointers.Pointer(Logan, 2), Pointers.Pointer(AnnArbor, 4), Poi
 
 Bogota.addPointers(Pointers.Pointer(Villa, 2), Pointers.Pointer(Rio, 2))
 
-Rio.addPointers(Pointers.Pointer(Asuncion, 1), Pointers.Pointer(Lima, 2), Pointers.Pointer(CapeTown, 4))
+Rio.addPointers(Pointers.Pointer(Asuncion, 1), Pointers.Pointer(Lima, 2), Pointers.Pointer(CapeTown, 4),Pointers.Pointer(Bogota, 2))
 
 Lima.addPointers(Pointers.Pointer(Rio, 2), Pointers.Pointer(Hawaii, 6))
 
