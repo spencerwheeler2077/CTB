@@ -8,5 +8,8 @@ class Player:
         self.pawn = Pawn.Pawn(pawnimage, location.adjustedLocation(self.adjustX, self.adjustY))
         self.location = location
 
+    def goTo(self, newlocation):
+        self.location = newlocation
+        self.pawn.move(self.location.adjustedLocation(self.adjustX, self.adjustY))
 
 

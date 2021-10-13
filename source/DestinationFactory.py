@@ -1,6 +1,10 @@
 import destination
 import Pointers
 
+
+
+
+
 NorthPole = destination.Destination(660, 50, "North Pole")
 
 AnnArbor = destination.Destination(275, 305, "Ann Arbor, Michigan")
@@ -19,7 +23,7 @@ Malaga = destination.Destination(605, 320, "Malaga Spain")
 London = destination.Destination(625, 250, "London, England")
 Iceland = destination.Destination(560, 180, "Reykjavik, Iceland")
 
-Cairo = destination.Destination(760, 375, "Cario, Egypt")
+Cairo = destination.Destination(760, 375, "Cairo, Egypt")
 Mombasa = destination.Destination(820, 620, "Mombasa, Kenya")
 Abidjan = destination.Destination(605, 490, "Abidjan, Cote d'Ivoire")
 CapeTown = destination.Destination(725, 697, "Cape Town, South Africa")

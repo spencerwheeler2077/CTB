@@ -7,6 +7,9 @@ class Pawn(pygame.sprite.Sprite):
         self.rect = self.image.get_rect()
         self.rect.center = location
 
+    def move(self, location):
+        self.rect.center = location
+
 class Grid(pygame.sprite.Sprite):
     def __init__(self, imagepath):
         pygame.sprite.Sprite.__init__(self),

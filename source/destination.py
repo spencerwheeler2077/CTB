@@ -16,4 +16,7 @@ class Destination:
     def adjustedLocation(self, x, y):
         return self.x+x, self.y+y
 
+    def getDirection(self, index):
+        return self.pointers[index].destination
+
 
