@@ -1,7 +1,7 @@
 import random
 
 
-class DestinationDeck():
+class DestinationDeck:
     def __init__(self):
         filepath = 'resource/Destinations'
         self.deck = []
@@ -10,13 +10,16 @@ class DestinationDeck():
             self.deck.append(line.strip('\n'))
         random.shuffle(self.deck)
 
+
+        self.deck = self.deck[:5]  # get rid of this!!
+
     def pop(self):
         if len(self.deck) == 0:
             return ''
         return self.deck.pop()
 
 
-class Hand():
+class Hand:
     def __init__(self):
         self.hand = []
         self.deck = DestinationDeck()

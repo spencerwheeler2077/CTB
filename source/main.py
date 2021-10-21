@@ -46,10 +46,10 @@ pygame.draw.rect(background, (0, 0, 0), (PANEL_X, PANEL_Y, PANEL_LEN, PANEL_HEIG
 pygame.draw.rect(background, PANEL_COLOR, (PANEL_X + 3, PANEL_Y + 3, PANEL_LEN-6, PANEL_HEIGHT-6))
 
 buttonX = PANEL_X + 5
-buttonTop = PANEL_Y + 20
+buttonTop = PANEL_Y + 10
 buttonWidth = 225
 buttonHeight = 30
-buttonDif = 40
+buttonDif = 37
 buttonList = []
 
 
@@ -114,6 +114,16 @@ HAND_FONT = pygame.font.SysFont("Timeless", 30)
 
 Complete = pygame.event.Event(pygame.USEREVENT, attr1='COMPLETE')
 
+Reset = pygame.event.Event(pygame.USEREVENT, attr1='RESET')
+
+
+def resetButtonFun():
+    pygame.event.post(Reset)
+
+
+resetButton = Button(background, PANEL_X + buttonWidth - 60, PANEL_Y + PANEL_HEIGHT - 35, 60, 30)
+resetButton.setString("Go Back")
+resetButton.setOnClick(resetButtonFun)
 
 def finishButtonFun():
 
@@ -125,6 +135,7 @@ finishButton = Button(background, PANEL_X + buttonWidth + 170, PANEL_Y + PANEL_H
 finishButton.setString("Complete Destination")
 finishButton.setOnClick(finishButtonFun)
 
+
 def updateComplete(player):
 
     for j in range(3):
@@ -135,13 +146,29 @@ def updateComplete(player):
             finishButton.disable()
 
 
-
 def updateDestinationView(player, surface):
+    hand1 = player.deck.hand[0]
+    hand2 = player.deck.hand[1]
+    hand3 = player.deck.hand[2]
+    location = player.location.name
 
     surface.fill((170, 140, 130))
-    text1 = HAND_FONT.render(f"{player.deck.hand[0]}", False, (0, 0, 0))
-    text2 = HAND_FONT.render(f"{player.deck.hand[1]}", False, (0, 0, 0))
-    text3 = HAND_FONT.render(f"{player.deck.hand[2]}", False, (0, 0, 0))
+
+    if hand1 == location:
+        text1 = HAND_FONT.render(f"{hand1}", False, (0, 200, 0))
+    else:
+        text1 = HAND_FONT.render(f"{hand1}", False, (0, 0, 0))
+
+    if hand2 == location:
+        text2 = HAND_FONT.render(f"{hand2}", False, (0, 200, 0))
+    else:
+        text2 = HAND_FONT.render(f"{hand2}", False, (0, 0, 0))
+
+    if hand3 == location:
+        text3 = HAND_FONT.render(f"{hand3}", False, (0, 200, 0))
+    else:
+        text3 = HAND_FONT.render(f"{hand3}", False, (0, 0, 0))
+
     surface.blit(text1, (5, 10))
     surface.blit(text2, (5, 40))
     surface.blit(text3, (5, 70))
@@ -180,6 +207,7 @@ Event1 = pygame.event.Event(pygame.USEREVENT, attr1='DES1')
 Event2 = pygame.event.Event(pygame.USEREVENT, attr1='DES2')
 Event3 = pygame.event.Event(pygame.USEREVENT, attr1='DES3')
 Event4 = pygame.event.Event(pygame.USEREVENT, attr1='DES4')
+WIN = pygame.event.Event(pygame.USEREVENT, attr1='WIN')
 
 
 i = 0
@@ -189,6 +217,7 @@ playerNameText = pygame.Surface((150, 30))  # these numbers here are the dimensi
 handView = pygame.Surface((270, 100))
 updateName(Player, playerNameText)
 
+won = False
 
 while True:
 
@@ -229,10 +258,23 @@ while True:
                 roll(Player)
 
             if event.attr1 == 'COMPLETE':
-                for p in  range(3):
-                    if Player.deck.hand[p]== Player.location.name:
+                for p in range(3):
+                    if Player.deck.hand[p] == Player.location.name:
                         Player.deck.hand[p] = Player.deck.deck.pop()
-                        print('hi')
+                        if Player.deck.hand[p] == '':
+                            Player.complete += 1
+                        if Player.complete == 3: # if the player has no destinations left, give them northpole as destination.
+                            Player.deck.hand[0] = "North Pole"
+                        if Player.complete == 4 and Player.location.name == "North Pole":
+                            pygame.event.post(WIN)
+
+            if event.attr1 == 'WIN':
+                WinBox = pygame.Surface((800, 600))
+                background.blit(WinBox, (350, 100))
+                Won = True
+
+            if event.attr1 == 'RESET':
+                Player.goBack()
 
             updateDesButtons(Player, buttonList)
             updateName(Player, playerNameText)
