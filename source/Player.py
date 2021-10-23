@@ -16,6 +16,8 @@ class Player:
         self.previousLocation = location
         self.preRollCount = 0
         self.complete = 0
+        self.nextTurn = 100
+        self.bonus = 0
 
     def goTo(self, info):
 
@@ -35,8 +37,10 @@ class Player:
             return self.rollCount
 
     def reset(self):
+        self.pawn.reset()
         self.hasRolled = False
-        self.rollCount = 100
+        self.rollCount = self.nextTurn
+        #self.nextTurn = 0
         self.previousLocation = self.location
         self.preRollCount = 0
 
@@ -44,6 +48,28 @@ class Player:
         self.location = self.previousLocation
         self.rollCount = self.preRollCount
         self.pawn.move(self.location.adjustedLocation(self.adjustX, self.adjustY))
+
+    def useEvent(self, event):
+
+        if event.location is not None:
+            self.location = event.location
+
+        if event.nextTurn is not None:
+            self.nextTurn = event.nextTurn
+
+        if event.bonus is not None:
+            self.bonus += event.bonus
+
+        if event.give is not None:
+            return self.deck.deck.pop()
+
+        if event.skip is not None:
+            self.deck.deck.pop()
+
+        if event.add is not None:
+            self.deck.deck.append(event.add)
+
+
 
 
 

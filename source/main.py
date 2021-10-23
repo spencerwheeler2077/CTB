@@ -219,7 +219,14 @@ updateName(Player, playerNameText)
 
 won = False
 
-while True:
+frameCount = 0
+while not won:
+    if frameCount == 38:
+        Player.pawn.switchPawn()
+    frameCount += 1
+    if frameCount > 60:
+        Player.pawn.switchPawn()
+        frameCount = 0
 
     display_surface.fill(WHITE)
     display_surface.blit(background, (0, 0))
@@ -271,12 +278,13 @@ while True:
             if event.attr1 == 'WIN':
                 WinBox = pygame.Surface((800, 600))
                 background.blit(WinBox, (350, 100))
-                Won = True
+                won = True
 
             if event.attr1 == 'RESET':
                 Player.goBack()
 
-            updateDesButtons(Player, buttonList)
+            if not won:
+                updateDesButtons(Player, buttonList)
             updateName(Player, playerNameText)
             updateRollView(Player, rollView)
             updateDestinationView(Player, handView)
@@ -284,3 +292,4 @@ while True:
 
     pygame_widgets.update(events)
     pygame.display.update()
+
