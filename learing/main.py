@@ -103,6 +103,7 @@ class Chimp(pygame.sprite.Sprite):
             self.original = self.image
 
 def main():
+
     pygame.init()
     screen = pygame.display.set_mode((1000, 135))
     pygame.display.set_caption('Monkey Fever')
@@ -130,7 +131,7 @@ def main():
 
     going = True
 
-    while going == True:
+    while going:
         clock.tick(60)
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
