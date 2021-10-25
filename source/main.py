@@ -3,9 +3,10 @@ import pygame_widgets
 import DestinationFactory
 import Player as play
 from myButton import CTBGButton as Button
+import time
 
 
-def main(numberOfPlayers):
+def main(numberOfPlayers, deckSize):
 
     pygame.init()
     pygame.font.init()
@@ -29,12 +30,14 @@ def main(numberOfPlayers):
     # variables to make the players
     pawnImages = ['resource/yellowpawn.png', 'resource/bluepawn.png', 'resource/greenpawn.png', 'resource/whitepawn.png',
                   'resource/orangepawn.png', 'resource/redpawn.png']
-    AdjustmentList = [[-9, -6], [-9, 6], [0, -6], [0, 6], [9, -6], [9, 6]]
+    AdjustmentList = [[-11, -7], [-1, -7], [9, -7], [-9, 7], [1, 7], [11, 7]]
     allSprites = pygame.sprite.RenderPlain()
     playerList = []
 
     for i in range(NUMPLAYERS):
-        newPlayer = play.Player(f"Player {i+1}", pawnImages[i], DestinationFactory.NorthPole, AdjustmentList[i])
+        newPlayer = play.Player(f"Player {i+1}", pawnImages[i], DestinationFactory.NorthPole,
+                                AdjustmentList[i], deckSize)
+
         allSprites.add(newPlayer.pawn)
         playerList.append(newPlayer)
 
@@ -271,6 +274,7 @@ def main(numberOfPlayers):
                     roll(Player)
 
                 if event.attr1 == 'COMPLETE':
+                    time.sleep(.5)
                     for p in range(3):
                         if Player.deck.hand[p] == Player.location.name:
                             Player.deck.hand[p] = Player.deck.deck.pop()
@@ -300,4 +304,4 @@ def main(numberOfPlayers):
         pygame.display.update()
 
 if __name__ == "__main__":
-    main(3)
+    main(6, 12)

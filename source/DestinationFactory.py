@@ -21,7 +21,7 @@ Malaga = destination.Destination(605, 320, "Malaga Spain")
 London = destination.Destination(625, 250, "London, England")
 Iceland = destination.Destination(560, 180, "Reykjavik, Iceland")
 
-Cairo = destination.Destination(760, 375, "Cairo, Egypt")
+Cairo = destination.Destination(760, 368, "Cairo, Egypt")
 Mombasa = destination.Destination(825, 515, "Mombasa, Kenya")
 Abidjan = destination.Destination(605, 490, "Abidjan, Cote d'Ivoire")
 CapeTown = destination.Destination(725, 697, "Cape Town, South Africa")

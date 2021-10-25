@@ -4,12 +4,12 @@ import random
 
 
 class Player:
-    def __init__(self, name, pawnimage, location, adjustments):
+    def __init__(self, name, pawnimage, location, adjustments, deckSize):
         self.adjustX = adjustments[0]
         self.adjustY = adjustments[1]
         self.pawn = Pawn.Pawn(pawnimage, location.adjustedLocation(self.adjustX, self.adjustY))
         self.location = location
-        self.deck = Hand.Hand()
+        self.deck = Hand.Hand(deckSize)
         self.name = name
         self.rollCount = 0
         self.hasRolled = False
