@@ -1,7 +1,7 @@
 import pygame
 import pygame_widgets
 import DestinationFactory
-import Player as play
+import Player as player
 from myButton import CTBGButton as Button
 import time
 
@@ -26,16 +26,17 @@ def main(numberOfPlayers, deckSize):
 
     pygame.display.set_mode((WINDOW_X, WINDOW_Y))
     pygame.display.set_caption('Christmas the Board Game')
+    destinationList = DestinationFactory.destinationFactory()
 
     # variables to make the players
-    pawnImages = ['resource/yellowpawn.png', 'resource/bluepawn.png', 'resource/greenpawn.png', 'resource/whitepawn.png',
-                  'resource/orangepawn.png', 'resource/redpawn.png']
+    pawnImages = ['resource/yellowpawn.png', 'resource/bluepawn.png', 'resource/greenpawn.png',
+                  'resource/whitepawn.png', 'resource/orangepawn.png', 'resource/redpawn.png']
     AdjustmentList = [[-11, -7], [-1, -7], [9, -7], [-9, 7], [1, 7], [11, 7]]
     allSprites = pygame.sprite.RenderPlain()
     playerList = []
 
     for i in range(NUMPLAYERS):
-        newPlayer = play.Player(f"Player {i+1}", pawnImages[i], DestinationFactory.NorthPole,
+        newPlayer = player.Player(f"Player {i+1}", pawnImages[i], destinationList[0],
                                 AdjustmentList[i], deckSize)
 
         allSprites.add(newPlayer.pawn)

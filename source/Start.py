@@ -5,14 +5,17 @@ from pygame_widgets.slider import Slider
 from pygame_widgets.textbox import TextBox
 from pygame_widgets.button import Button
 
+
 def disableWidgets(list):
 
     for i in list:
         i.disable()
         i.hide()
 
+
 def enterFun():
     pygame.event.post(pygame.event.Event(pygame.USEREVENT))
+
 
 def start():
     widgetList = []
