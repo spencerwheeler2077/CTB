@@ -41,15 +41,28 @@ def destinationFactory():
     NorthPole.addPointers(Pointers.Pointer(AnnArbor, 3), Pointers.Pointer(Finland, 1), Pointers.Pointer(Moscow, 2))
     list.append(NorthPole)
 
+    Logan.addPointers(Pointers.Pointer(Vancouver, 1), Pointers.Pointer(Villa, 2))
+    list.append(Logan)
+
+    London.addPointers(Pointers.Pointer(Malaga, 2), Pointers.Pointer(Iceland, 1))
+    list.append(London)
+
+    Hawaii.addPointers(Pointers.Pointer(Manila, 2), Pointers.Pointer(Lima, 6))
+    list.append(Hawaii)
+
+    CapeTown.addPointers(Pointers.Pointer(Mombasa, 2), Pointers.Pointer(Rio, 4), Pointers.Pointer(Sydney, 5))
+    list.append(CapeTown)
+
+    Lima.addPointers(Pointers.Pointer(Rio, 2), Pointers.Pointer(Hawaii, 6))
+    list.append(Lima)
+
+
     AnnArbor.addPointers(Pointers.Pointer(NorthPole, 3), Pointers.Pointer(Vancouver, 2), Pointers.Pointer(Villa, 4),
                          Pointers.Pointer(Abidjan, 5))
     list.append(AnnArbor)
 
     Vancouver.addPointers(Pointers.Pointer(AnnArbor, 2), Pointers.Pointer(Logan, 1))
     list.append(AnnArbor)
-
-    Logan.addPointers(Pointers.Pointer(Vancouver, 1), Pointers.Pointer(Villa, 2))
-    list.append(Logan)
 
     Villa.addPointers(Pointers.Pointer(Logan, 2), Pointers.Pointer(AnnArbor, 4), Pointers.Pointer(Bogota, 2))
     list.append(Villa)
@@ -59,9 +72,6 @@ def destinationFactory():
 
     Rio.addPointers(Pointers.Pointer(Asuncion, 1), Pointers.Pointer(Lima, 2), Pointers.Pointer(CapeTown, 4),Pointers.Pointer(Bogota, 2))
     list.append(Rio)
-
-    Lima.addPointers(Pointers.Pointer(Rio, 2), Pointers.Pointer(Hawaii, 6))
-    list.append(Lima)
 
     Asuncion.addPointers(Pointers.Pointer(Rio, 1))
     list.append(Asuncion)
@@ -74,9 +84,6 @@ def destinationFactory():
 
     Malaga.addPointers(Pointers.Pointer(Rome, 1), Pointers.Pointer(London, 2), Pointers.Pointer(Abidjan, 3))
     list.append(Malaga)
-
-    London.addPointers(Pointers.Pointer(Malaga, 2), Pointers.Pointer(Iceland, 1))
-    list.append(London)
 
     Iceland.addPointers(Pointers.Pointer(London, 1))
     list.append(Iceland)
@@ -93,9 +100,6 @@ def destinationFactory():
 
     Madagascar.addPointers(Pointers.Pointer(Mombasa, 2))
     list.append(Madagascar)
-
-    CapeTown.addPointers(Pointers.Pointer(Mombasa, 2), Pointers.Pointer(Rio, 4), Pointers.Pointer(Sydney, 5))
-    list.append(CapeTown)
 
     Moscow.addPointers(Pointers.Pointer(NorthPole, 2), Pointers.Pointer(Astana, 2))
     list.append(Moscow)
@@ -115,9 +119,6 @@ def destinationFactory():
 
     Manila.addPointers(Pointers.Pointer(China, 1), Pointers.Pointer(Hawaii, 2), Pointers.Pointer(Sydney, 2))
     list.append(Manila)
-
-    Hawaii.addPointers(Pointers.Pointer(Manila, 2), Pointers.Pointer(Lima, 6))
-    list.append(Hawaii)
 
     Sydney.addPointers(Pointers.Pointer(Manila, 2), Pointers.Pointer(CapeTown, 5))
     list.append(Sydney)
