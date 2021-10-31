@@ -17,6 +17,9 @@ class DestinationDeck:
             return ''
         return self.deck.pop()
 
+    def add(self, destination):
+        self.deck.append(destination)
+
 
 class Hand:
     def __init__(self, deckSize):

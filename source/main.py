@@ -4,10 +4,10 @@ import DestinationFactory
 import Player as player
 from myButton import CTBGButton as Button
 import time
+import Event
 
 
 def main(numberOfPlayers, deckSize):
-
     pygame.init()
     pygame.font.init()
 
@@ -36,12 +36,13 @@ def main(numberOfPlayers, deckSize):
     playerList = []
 
     for i in range(NUMPLAYERS):
-        newPlayer = player.Player(f"Player {i+1}", pawnImages[i], destinationList[0],
-                                AdjustmentList[i], deckSize)
+        newPlayer = player.Player(f"Player {i + 1}", pawnImages[i], destinationList[0],
+                                  AdjustmentList[i], deckSize)
 
         allSprites.add(newPlayer.pawn)
         playerList.append(newPlayer)
 
+    eventDeck = Event.EventDeck()
 
     # setting the control panel up for players.
     PANEL_X = 845
@@ -50,7 +51,7 @@ def main(numberOfPlayers, deckSize):
     PANEL_HEIGHT = 190
 
     pygame.draw.rect(background, (0, 0, 0), (PANEL_X, PANEL_Y, PANEL_LEN, PANEL_HEIGHT))
-    pygame.draw.rect(background, PANEL_COLOR, (PANEL_X + 3, PANEL_Y + 3, PANEL_LEN-6, PANEL_HEIGHT-6))
+    pygame.draw.rect(background, PANEL_COLOR, (PANEL_X + 3, PANEL_Y + 3, PANEL_LEN - 6, PANEL_HEIGHT - 6))
 
     buttonX = PANEL_X + 5
     buttonTop = PANEL_Y + 10
@@ -58,7 +59,6 @@ def main(numberOfPlayers, deckSize):
     buttonHeight = 30
     buttonDif = 37
     buttonList = []
-
 
     def desButtonpost(number):
         if number == 1:
@@ -70,24 +70,19 @@ def main(numberOfPlayers, deckSize):
         if number == 4:
             pygame.event.post(Event4)
 
-
     for i in range(4):
-
-        button = Button(background, buttonX, buttonTop + (buttonDif*i), buttonWidth, buttonHeight, i+1)
+        button = Button(background, buttonX, buttonTop + (buttonDif * i), buttonWidth, buttonHeight, i + 1)
         button.setOnClick(desButtonpost, [button.number])
         buttonList.append(button)
 
     EndTurn = pygame.event.Event(pygame.USEREVENT, attr1='END')
 
-
     def roll(player):
 
         player.roll()
 
-
     def endButtonFunc():
         pygame.event.post(EndTurn)
-
 
     endTurnButton = Button(background, PANEL_X + buttonWidth + 20, PANEL_Y + PANEL_HEIGHT - 40, 120, 35)
     endTurnButton.setString("End Turn")
@@ -95,10 +90,8 @@ def main(numberOfPlayers, deckSize):
 
     ROLL = pygame.event.Event(pygame.USEREVENT, attr1='ROLL')
 
-
     def rollButtonFunc():
         pygame.event.post(ROLL)
-
 
     def updateRollView(player, surface):
         surface.fill(PANEL_COLOR)
@@ -106,9 +99,7 @@ def main(numberOfPlayers, deckSize):
         surface.blit(text, surface.get_rect())
         background.blit(surface, (PANEL_X + buttonWidth + 30, PANEL_Y + 40))
 
-
     rollView = pygame.Surface((50, 50))
-
 
     rollButton = Button(background, PANEL_X + buttonWidth + 20, PANEL_Y + PANEL_HEIGHT - 80, 80, 35)
     rollButton.setString("Roll")
@@ -123,10 +114,8 @@ def main(numberOfPlayers, deckSize):
 
     Reset = pygame.event.Event(pygame.USEREVENT, attr1='RESET')
 
-
     def resetButtonFun():
         pygame.event.post(Reset)
-
 
     resetButton = Button(background, PANEL_X + buttonWidth - 60, PANEL_Y + PANEL_HEIGHT - 35, 60, 30)
     resetButton.setString("Go Back")
@@ -137,11 +126,9 @@ def main(numberOfPlayers, deckSize):
         pygame.event.post(Complete)
         pygame.event.post(EndTurn)
 
-
     finishButton = Button(background, PANEL_X + buttonWidth + 170, PANEL_Y + PANEL_HEIGHT - 30, 150, 25)
     finishButton.setString("Complete Destination")
     finishButton.setOnClick(finishButtonFun)
-
 
     def updateComplete(player):
 
@@ -151,7 +138,6 @@ def main(numberOfPlayers, deckSize):
                 return
             else:
                 finishButton.disable()
-
 
     def updateDestinationView(player, surface):
         hand1 = player.deck.hand[0]
@@ -181,7 +167,6 @@ def main(numberOfPlayers, deckSize):
         surface.blit(text3, (5, 70))
         background.blit(surface, (PANEL_X + PANEL_LEN - 275, PANEL_Y + 15))
 
-
     def updateDesButtons(numPlayer, List):
 
         Pointers = numPlayer.location.pointers
@@ -201,7 +186,6 @@ def main(numberOfPlayers, deckSize):
                 List[k].disable()
                 List[k].colour = (100, 100, 100)
 
-
     def updateName(numPlayer, surface):
         surface.fill(PANEL_COLOR)
         text = FONT.render(f"{numPlayer.name}", False, (0, 0, 0))
@@ -209,13 +193,11 @@ def main(numberOfPlayers, deckSize):
         playerNameText.blit(surface, (0, 0))
         background.blit(surface, (PANEL_X + buttonWidth + 20, PANEL_Y + 10))
 
-
     Event1 = pygame.event.Event(pygame.USEREVENT, attr1='DES1')
     Event2 = pygame.event.Event(pygame.USEREVENT, attr1='DES2')
     Event3 = pygame.event.Event(pygame.USEREVENT, attr1='DES3')
     Event4 = pygame.event.Event(pygame.USEREVENT, attr1='DES4')
     WIN = pygame.event.Event(pygame.USEREVENT, attr1='WIN')
-
 
     i = 0
     Player = playerList[i]
@@ -241,10 +223,14 @@ def main(numberOfPlayers, deckSize):
 
         events = pygame.event.get()
 
+        # TODO Add event textBox, and fix display timing
+        # TODO Add add one button
+        # TODO Finish end Screen/window
+        # TODO LOTS OF TESTING
+
         for event in events:
 
             if event.type == pygame.QUIT:
-
                 pygame.quit()
                 quit()
 
@@ -265,7 +251,7 @@ def main(numberOfPlayers, deckSize):
                     Player.reset()
                     playerList[i] = Player
 
-                    if i == NUMPLAYERS-1:
+                    if i == NUMPLAYERS - 1:
                         i = -1
 
                     i += 1
@@ -279,9 +265,16 @@ def main(numberOfPlayers, deckSize):
                     for p in range(3):
                         if Player.deck.hand[p] == Player.location.name:
                             Player.deck.hand[p] = Player.deck.deck.pop()
+                            eventCard = eventDeck.giveEvent()
+                            giveCard = Player.useEvent(eventCard)
+                            if giveCard is not None:
+                                if i == (NUMPLAYERS -1):
+                                    playerList[0].deck.add(giveCard)
+                                else:
+                                    playerList[i+1].deck.add(giveCard)
                             if Player.deck.hand[p] == '':
                                 Player.complete += 1
-                            if Player.complete == 3: # if the player has no destinations left, give them northpole as destination.
+                            if Player.complete == 3:  # if the player has no destinations left, give them northpole as destination.
                                 Player.deck.hand[0] = "North Pole"
                             if Player.complete == 4 and Player.location.name == "North Pole":
                                 pygame.event.post(WIN)
@@ -303,6 +296,7 @@ def main(numberOfPlayers, deckSize):
 
         pygame_widgets.update(events)
         pygame.display.update()
+
 
 if __name__ == "__main__":
     main(6, 12)
