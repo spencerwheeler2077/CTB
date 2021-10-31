@@ -67,8 +67,11 @@ class Player:
         if event.skip:
             self.deck.deck.pop()
 
-        if event.add != "":
+        if event.add is not None:
             self.deck.deck.add(event.add)
+
+        if event.extra:
+            return 'extra'
 
         return None
 

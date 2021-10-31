@@ -1,5 +1,6 @@
 import pygame
 import pygame_widgets
+from pygame_widgets.textbox import TextBox
 import DestinationFactory
 import Player as player
 from myButton import CTBGButton as Button
@@ -101,9 +102,12 @@ def main(numberOfPlayers, deckSize):
 
     rollView = pygame.Surface((50, 50))
 
-    rollButton = Button(background, PANEL_X + buttonWidth + 20, PANEL_Y + PANEL_HEIGHT - 80, 80, 35)
+    rollButton = Button(background, PANEL_X + buttonWidth + 20, PANEL_Y + PANEL_HEIGHT - 80, 78, 35)
     rollButton.setString("Roll")
     rollButton.setOnClick(rollButtonFunc)
+
+    plusOneButton = Button(background, PANEL_X + buttonWidth + 102, PANEL_Y + PANEL_HEIGHT - 80, 38, 35)
+    plusOneButton.setString("+1")
 
     desButColDis = (100, 100, 100)
     activeButtonCol = (220, 220, 220)
@@ -113,6 +117,12 @@ def main(numberOfPlayers, deckSize):
     Complete = pygame.event.Event(pygame.USEREVENT, attr1='COMPLETE')
 
     Reset = pygame.event.Event(pygame.USEREVENT, attr1='RESET')
+
+    deckText = TextBox(background, PANEL_X + PANEL_LEN - 55, PANEL_Y + PANEL_HEIGHT - 55, 45, 45, fontSize=30)
+    deckText.setText("")
+    deckText.disable()
+
+
 
     def resetButtonFun():
         pygame.event.post(Reset)
@@ -144,6 +154,8 @@ def main(numberOfPlayers, deckSize):
         hand2 = player.deck.hand[1]
         hand3 = player.deck.hand[2]
         location = player.location.name
+        deckText.setText(len(player.deck.deck.deck))
+        deckText.draw()
 
         surface.fill((170, 140, 130))
 
@@ -209,6 +221,10 @@ def main(numberOfPlayers, deckSize):
     won = False
 
     frameCount = 0
+    # TODO Add event textBox, and fix display timing
+    # TODO Add add one button
+    # TODO Finish end Screen/window
+    # TODO LOTS OF TESTING
     while not won:
         if frameCount == 38:
             Player.pawn.switchPawn()
@@ -222,11 +238,6 @@ def main(numberOfPlayers, deckSize):
         allSprites.draw(display_surface)
 
         events = pygame.event.get()
-
-        # TODO Add event textBox, and fix display timing
-        # TODO Add add one button
-        # TODO Finish end Screen/window
-        # TODO LOTS OF TESTING
 
         for event in events:
 
@@ -249,12 +260,12 @@ def main(numberOfPlayers, deckSize):
 
                 if event.attr1 == 'END':
                     Player.reset()
-                    playerList[i] = Player
-
-                    if i == NUMPLAYERS - 1:
-                        i = -1
 
                     i += 1
+                    if i == NUMPLAYERS:
+                        i = 0
+
+
                     Player = playerList[i]
 
                 if event.attr1 == 'ROLL':
@@ -267,11 +278,14 @@ def main(numberOfPlayers, deckSize):
                             Player.deck.hand[p] = Player.deck.deck.pop()
                             eventCard = eventDeck.giveEvent()
                             giveCard = Player.useEvent(eventCard)
+                            if giveCard == 'extra':
+                                i = i-1
+                                giveCard = None
                             if giveCard is not None:
-                                if i == (NUMPLAYERS -1):
+                                if i == (NUMPLAYERS - 1):
                                     playerList[0].deck.add(giveCard)
                                 else:
-                                    playerList[i+1].deck.add(giveCard)
+                                    playerList[i+1].deck.deck.add(giveCard)
                             if Player.deck.hand[p] == '':
                                 Player.complete += 1
                             if Player.complete == 3:  # if the player has no destinations left, give them northpole as destination.

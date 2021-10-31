@@ -10,15 +10,27 @@ class EventCard:
         items = line.split(", ")
         for i in range(len(items)):
             if items[i] == '':
-                items[i] = 0
+                if i == 1 or i == 6:
+                    items[i] = None
+                else:
+                    items[i] = 0
+
         self.text = items[0]
 
-        self.location = destinationList[int(items[1])]
+        if items[1] is not None:
+            self.location = destinationList[int(items[1])]
+
+        else:
+            self.location = None
         self.nextTurn = int(items[2])
         self.bonus = int(items[3])
         self.give = bool(items[4])
         self.skip = bool(items[5])
-        self.add = destinationList[int(items[6])].name
+        if items[6] is not None:
+            self.add = destinationList[int(items[6])].name
+        else:
+            self.add= None
+        self.extra = bool(items[7])
 
 
 
@@ -31,6 +43,8 @@ class EventDeck:
         self.used = []
         for line in self.file:
             self.deck.append(EventCard(line))
+
+        self.deck = self.deck[53:]
         random.shuffle(self.deck)
 
         self.file.close()
