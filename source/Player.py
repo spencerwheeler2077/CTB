@@ -36,6 +36,14 @@ class Player:
         else:
             return self.rollCount
 
+    def useBonus(self):
+        if self.bonus <= 0:
+            return
+        else:
+            self.rollCount = self.rollCount + 1
+            self.bonus = self.bonus - 1
+
+
     def reset(self):
         self.pawn.reset()
         self.hasRolled = False
@@ -62,7 +70,8 @@ class Player:
             self.bonus += event.bonus
 
         if event.give:
-            return self.deck.deck.pop()
+            if self.deck.giveDeckLen() > 0:
+                return self.deck.deck.pop()
 
         if event.skip:
             self.deck.deck.pop()

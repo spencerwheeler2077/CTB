@@ -9,7 +9,7 @@ class DestinationDeck:
         for line in file:
             self.deck.append(line.strip('\n'))
         random.shuffle(self.deck)
-        self.deck = self.deck[:(deckSize-1)]  # minus one because because 0 is included.
+        self.deck = self.deck[:deckSize]
         random.shuffle(self.deck)
 
     def pop(self):
@@ -19,6 +19,9 @@ class DestinationDeck:
 
     def add(self, destination):
         self.deck.append(destination)
+
+    def giveLength(self):
+        return len(self.deck)
 
 
 class Hand:
@@ -31,5 +34,8 @@ class Hand:
     def addToHand(self):
         if len(self.hand) < 3:
             self.hand.append(self.deck.pop())
+
+    def giveDeckLen(self):
+        return self.deck.giveLength()
 
 

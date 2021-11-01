@@ -15,7 +15,13 @@ class EventCard:
                 else:
                     items[i] = 0
 
-        self.text = items[0]
+        self.wholeText = items[0]
+        if len(self.wholeText) > 35:
+            self.text1 = self.wholeText[0:34]
+            self.text2 = self.wholeText[34:]
+        else:
+            self.text1 = self.wholeText
+            self.text2 = ''
 
         if items[1] is not None:
             self.location = destinationList[int(items[1])]
@@ -32,6 +38,10 @@ class EventCard:
             self.add= None
         self.extra = bool(items[7])
 
+    def giveText(self):
+        return [self.text1, self.text2]
+
+#TODO add event card that switches player positions.
 
 
 class EventDeck:
@@ -44,7 +54,6 @@ class EventDeck:
         for line in self.file:
             self.deck.append(EventCard(line))
 
-        self.deck = self.deck[53:]
         random.shuffle(self.deck)
 
         self.file.close()

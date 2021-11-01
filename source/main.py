@@ -90,6 +90,10 @@ def main(numberOfPlayers, deckSize):
     endTurnButton.setOnClick(endButtonFunc)
 
     ROLL = pygame.event.Event(pygame.USEREVENT, attr1='ROLL')
+    ADD = pygame.event.Event(pygame.USEREVENT, attr1='ADD')
+
+    def plusOneButtonFunc():
+        pygame.event.post(ADD)
 
     def rollButtonFunc():
         pygame.event.post(ROLL)
@@ -108,6 +112,7 @@ def main(numberOfPlayers, deckSize):
 
     plusOneButton = Button(background, PANEL_X + buttonWidth + 102, PANEL_Y + PANEL_HEIGHT - 80, 38, 35)
     plusOneButton.setString("+1")
+    plusOneButton.setOnClick(plusOneButtonFunc)
 
     desButColDis = (100, 100, 100)
     activeButtonCol = (220, 220, 220)
@@ -154,7 +159,7 @@ def main(numberOfPlayers, deckSize):
         hand2 = player.deck.hand[1]
         hand3 = player.deck.hand[2]
         location = player.location.name
-        deckText.setText(len(player.deck.deck.deck))
+        deckText.setText(str(player.deck.giveDeckLen()))
         deckText.draw()
 
         surface.fill((170, 140, 130))
@@ -178,6 +183,25 @@ def main(numberOfPlayers, deckSize):
         surface.blit(text2, (5, 40))
         surface.blit(text3, (5, 70))
         background.blit(surface, (PANEL_X + PANEL_LEN - 275, PANEL_Y + 15))
+
+        #TODO add the event view here
+
+    def updateEventView(surface, textList):
+        text1 = textList[0]
+        text2 = textList[1]
+        surface.fill((200, 200, 200))
+        message1 = HAND_FONT.render(text1, False, (0, 0, 0))
+        message2 = HAND_FONT.render(text2, False, (0, 0, 0))
+
+        surface.blit(message1, (5, 5))
+        surface.blit(message2, (5, 55))
+        background.blit(surface, (5, WINDOW_Y - 105))
+
+    def updatePlusOneButton(player):
+        if player.bonus > 0:
+            plusOneButton.enable()
+        else:
+            plusOneButton.disable()
 
     def updateDesButtons(numPlayer, List):
 
@@ -216,9 +240,13 @@ def main(numberOfPlayers, deckSize):
     updateDesButtons(Player, buttonList)
     playerNameText = pygame.Surface((150, 30))  # these numbers here are the dimensions of the text surface
     handView = pygame.Surface((270, 100))
+    eventView = pygame.Surface((400, 100))
+    eventBoarder = pygame.Surface((410, 110))
+    background.blit(eventBoarder, (0, WINDOW_Y - 110))
     updateName(Player, playerNameText)
 
     won = False
+    wait = False
 
     frameCount = 0
     # TODO Add event textBox, and fix display timing
@@ -272,18 +300,19 @@ def main(numberOfPlayers, deckSize):
                     roll(Player)
 
                 if event.attr1 == 'COMPLETE':
-                    time.sleep(.5)
+
                     for p in range(3):
                         if Player.deck.hand[p] == Player.location.name:
                             Player.deck.hand[p] = Player.deck.deck.pop()
                             eventCard = eventDeck.giveEvent()
+                            updateEventView(eventView, eventCard.giveText())
                             giveCard = Player.useEvent(eventCard)
                             if giveCard == 'extra':
                                 i = i-1
                                 giveCard = None
                             if giveCard is not None:
                                 if i == (NUMPLAYERS - 1):
-                                    playerList[0].deck.add(giveCard)
+                                    playerList[0].deck.deck.add(giveCard)
                                 else:
                                     playerList[i+1].deck.deck.add(giveCard)
                             if Player.deck.hand[p] == '':
@@ -292,6 +321,7 @@ def main(numberOfPlayers, deckSize):
                                 Player.deck.hand[0] = "North Pole"
                             if Player.complete == 4 and Player.location.name == "North Pole":
                                 pygame.event.post(WIN)
+                            wait = True
 
                 if event.attr1 == 'WIN':
                     WinBox = pygame.Surface((800, 600))
@@ -301,15 +331,20 @@ def main(numberOfPlayers, deckSize):
                 if event.attr1 == 'RESET':
                     Player.goBack()
 
+                if event.attr1 == 'ADD':
+                    Player.useBonus()
+
                 if not won:
                     updateDesButtons(Player, buttonList)
                 updateName(Player, playerNameText)
                 updateRollView(Player, rollView)
                 updateDestinationView(Player, handView)
                 updateComplete(Player)
+                updatePlusOneButton(Player)
 
         pygame_widgets.update(events)
         pygame.display.update()
+
 
 
 if __name__ == "__main__":
