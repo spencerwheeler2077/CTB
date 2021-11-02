@@ -1,3 +1,5 @@
+import random
+
 import pygame
 import pygame_widgets
 from pygame_widgets.textbox import TextBox
@@ -8,14 +10,13 @@ import time
 import Event
 
 
-def main(numberOfPlayers, deckSize):
+def main(names, deckSize):
     pygame.init()
     pygame.font.init()
 
     FONT = pygame.font.SysFont("Timeless", 40)
     WHITE = (255, 255, 255)
 
-    NUMPLAYERS = numberOfPlayers
     WINDOW_X = 1500
     WINDOW_Y = 830
     PANEL_COLOR = (198, 218, 200)
@@ -32,17 +33,24 @@ def main(numberOfPlayers, deckSize):
     # variables to make the players
     pawnImages = ['resource/yellowpawn.png', 'resource/bluepawn.png', 'resource/greenpawn.png',
                   'resource/whitepawn.png', 'resource/orangepawn.png', 'resource/redpawn.png']
+    chosenImages = []
+    for nameIndex in range(6):
+        if names[nameIndex] != '':
+            chosenImages.append([pawnImages[nameIndex], names[nameIndex]])
+    NUMPLAYERS = len(chosenImages)
+
     AdjustmentList = [[-11, -7], [-1, -7], [9, -7], [-9, 7], [1, 7], [11, 7]]
     allSprites = pygame.sprite.RenderPlain()
     playerList = []
 
     for i in range(NUMPLAYERS):
-        newPlayer = player.Player(f"Player {i + 1}", pawnImages[i], destinationList[0],
+        newPlayer = player.Player(chosenImages[i][1], chosenImages[i][0], destinationList[0],
                                   AdjustmentList[i], deckSize)
 
         allSprites.add(newPlayer.pawn)
         playerList.append(newPlayer)
 
+    random.shuffle(playerList)
     eventDeck = Event.EventDeck()
 
     # setting the control panel up for players.
@@ -235,8 +243,8 @@ def main(numberOfPlayers, deckSize):
     Event4 = pygame.event.Event(pygame.USEREVENT, attr1='DES4')
     WIN = pygame.event.Event(pygame.USEREVENT, attr1='WIN')
 
-    i = 0
-    Player = playerList[i]
+    currentPlayer = 0
+    Player = playerList[currentPlayer]
     updateDesButtons(Player, buttonList)
     playerNameText = pygame.Surface((150, 30))  # these numbers here are the dimensions of the text surface
     handView = pygame.Surface((270, 100))
@@ -253,17 +261,19 @@ def main(numberOfPlayers, deckSize):
     # TODO Add add one button
     # TODO Finish end Screen/window
     # TODO LOTS OF TESTING
-    while not won:
-        if frameCount == 38:
+    while True:
+        if frameCount == 38 and not won:
             Player.pawn.switchPawn()
         frameCount += 1
-        if frameCount > 60:
+        if frameCount > 60 and not won:
             Player.pawn.switchPawn()
             frameCount = 0
 
         display_surface.fill(WHITE)
         display_surface.blit(background, (0, 0))
-        allSprites.draw(display_surface)
+
+        if not won:
+            allSprites.draw(display_surface)
 
         events = pygame.event.get()
 
@@ -289,12 +299,12 @@ def main(numberOfPlayers, deckSize):
                 if event.attr1 == 'END':
                     Player.reset()
 
-                    i += 1
-                    if i == NUMPLAYERS:
-                        i = 0
+                    currentPlayer += 1
+                    if currentPlayer == NUMPLAYERS:
+                        currentPlayer = 0
 
 
-                    Player = playerList[i]
+                    Player = playerList[currentPlayer]
 
                 if event.attr1 == 'ROLL':
                     roll(Player)
@@ -308,13 +318,13 @@ def main(numberOfPlayers, deckSize):
                             updateEventView(eventView, eventCard.giveText())
                             giveCard = Player.useEvent(eventCard)
                             if giveCard == 'extra':
-                                i = i-1
+                                currentPlayer = currentPlayer-1
                                 giveCard = None
                             if giveCard is not None:
-                                if i == (NUMPLAYERS - 1):
-                                    playerList[0].deck.deck.add(giveCard)
+                                if currentPlayer == (NUMPLAYERS - 1):
+                                    playerList[0].deck.recieve(giveCard)
                                 else:
-                                    playerList[i+1].deck.deck.add(giveCard)
+                                    playerList[currentPlayer+1].deck.recieve(giveCard)
                             if Player.deck.hand[p] == '':
                                 Player.complete += 1
                             if Player.complete == 3:  # if the player has no destinations left, give them northpole as destination.
@@ -342,10 +352,20 @@ def main(numberOfPlayers, deckSize):
                 updateComplete(Player)
                 updatePlusOneButton(Player)
 
-        pygame_widgets.update(events)
+        if not won:
+            pygame_widgets.update(events)
+
+        if won:
+            WonScreen = pygame.Surface((800, 600))
+            WonScreen.fill((100, 200, 150))
+            WonText = TextBox(WonScreen, 50, 300, 500, 100, fontSize=80, textColour=(20, 120, 120))
+            WonText.setText(f"{Player.name} WON!")
+            WonText.draw()
+
+            background.blit(WonScreen, (350, 100))
         pygame.display.update()
 
 
 
 if __name__ == "__main__":
-    main(6, 12)
+    main(2, 3)

@@ -38,4 +38,12 @@ class Hand:
     def giveDeckLen(self):
         return self.deck.giveLength()
 
+    def recieve(self, destination):
+        for card in self.hand:
+            if card == '':
+                card = destination
+                return
+        self.deck.add(destination)
+
+
 
