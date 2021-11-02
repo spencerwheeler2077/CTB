@@ -12,7 +12,6 @@ def disableWidgets(list):
         i.disable()
         i.hide()
 
-
 def enterFun():
     pygame.event.post(pygame.event.Event(pygame.USEREVENT))
 
@@ -31,37 +30,37 @@ def start():
 
     sliderYDif = 100
 
-    textBox = TextBox(win, sliderX, sliderY - 80, 650, outputHeight, fontSize=30)
-    textBox.setText("Choose the number of Players, and number destinations desired")
+    textBox = TextBox(win, sliderX, sliderY - 15, 650, outputHeight, fontSize=30)
+    textBox.setText("Choose number destinations each player needs to complete")
     widgetList.append(textBox)
 
 
-    playerOutput = TextBox(win, sliderX + sliderWidth + 50, sliderY - 10, outputWidth, outputHeight, fontSize=25)
-    playerOutput.disable()
+    playerIntro = TextBox(win, 50, 290, 950, outputHeight, fontSize=45)
+    playerIntro.setText("Enter your name in a box, its outline determines your piece color")
+    playerIntro.disable()
 
-    widgetList.append(playerOutput)
+    widgetList.append(playerIntro)
 
     destinationSlider = Slider(win, sliderX, sliderY + sliderYDif, sliderWidth, sliderHeight,
-                               min=10, max=26, step=1, initial=20)
+                               min=10, max=26, step=1, initial=15)
     destinationOutput = TextBox(win, sliderX + sliderWidth + 50, sliderY + sliderYDif - 10, outputWidth, outputHeight,
                                 fontSize=25)
     destinationOutput.disable()
 
-    nameWidth = 530
-    nameHeight = 50
+    nameWidth = 200
+    nameHeight = 60
 
-    playername1 = TextBox(win, 100, 350, nameWidth, nameHeight, fontSize=40)
+    playername1 = TextBox(win, 100, 350, nameWidth, nameHeight, fontSize=45)
     playername1.borderColour = (255, 255, 0)
-    playername1
-    playername2 = TextBox(win, 650, 350, nameWidth, nameHeight, fontSize=40)
+    playername2 = TextBox(win, 350, 350, nameWidth, nameHeight, fontSize=45)
     playername2.borderColour = (0, 20, 255)
-    playername3 = TextBox(win, 100, 450, nameWidth, nameHeight, fontSize=40)
+    playername3 = TextBox(win, 100, 450, nameWidth, nameHeight, fontSize=45)
     playername3.borderColour = (0, 180, 0)
-    playername4 = TextBox(win, 650, 450, nameWidth, nameHeight, fontSize=40)
+    playername4 = TextBox(win, 350, 450, nameWidth, nameHeight, fontSize=45)
     playername4.borderColour = (255, 255, 255)
-    playername5 = TextBox(win, 100, 550, nameWidth, nameHeight, fontSize=40)
+    playername5 = TextBox(win, 100, 550, nameWidth, nameHeight, fontSize=45)
     playername5.borderColour = (255, 180, 0)
-    playername6 = TextBox(win, 650, 550, nameWidth, nameHeight, fontSize=40)
+    playername6 = TextBox(win, 350, 550, nameWidth, nameHeight, fontSize=45)
     playername6.borderColour = (230, 0, 0)
     playername1.draw()
     playername2.draw()
@@ -100,7 +99,7 @@ def start():
 
 
 
-        playerOutput.draw()
+        playerIntro.draw()
         destinationOutput.draw()
         pygame_widgets.update(events)
 
@@ -114,6 +113,13 @@ def start():
                 deckSize = destinationSlider.getValue()
                 nameList = [playername1.getText(), playername2.getText(), playername3.getText(),
                             playername4.getText(), playername5.getText(), playername6.getText()]
+                count = 0
+                for name in nameList:
+                    if name != "":
+                        count = count+1
+                if count < 2:
+                    break
+
                 disableWidgets(widgetList)
                 run = False
                 main.main(nameList, deckSize)

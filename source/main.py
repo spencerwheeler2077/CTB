@@ -147,7 +147,7 @@ def main(names, deckSize):
     def finishButtonFun():
 
         pygame.event.post(Complete)
-        pygame.event.post(EndTurn)
+
 
     finishButton = Button(background, PANEL_X + buttonWidth + 170, PANEL_Y + PANEL_HEIGHT - 30, 150, 25)
     finishButton.setString("Complete Destination")
@@ -331,7 +331,7 @@ def main(names, deckSize):
                                 Player.deck.hand[0] = "North Pole"
                             if Player.complete == 4 and Player.location.name == "North Pole":
                                 pygame.event.post(WIN)
-                            wait = True
+                            pygame.event.post(EndTurn) # end the player's turn
 
                 if event.attr1 == 'WIN':
                     WinBox = pygame.Surface((800, 600))
@@ -368,4 +368,4 @@ def main(names, deckSize):
 
 
 if __name__ == "__main__":
-    main(2, 3)
+    main(['Sam', '', '', '', 'Jim', ''], 3)
