@@ -254,7 +254,7 @@ def main(names, deckSize):
     updateName(Player, playerNameText)
 
     won = False
-    wait = False
+    completed = False
 
     frameCount = 0
     # TODO Add event textBox, and fix display timing
@@ -272,8 +272,13 @@ def main(names, deckSize):
         display_surface.fill(WHITE)
         display_surface.blit(background, (0, 0))
 
+
         if not won:
             allSprites.draw(display_surface)
+        pygame.display.update()
+        if completed:
+            time.sleep(3)
+            completed = False
 
         events = pygame.event.get()
 
@@ -310,28 +315,28 @@ def main(names, deckSize):
                     roll(Player)
 
                 if event.attr1 == 'COMPLETE':
+                    completed = True
 
                     for p in range(3):
                         if Player.deck.hand[p] == Player.location.name:
-                            Player.deck.hand[p] = Player.deck.deck.pop()
-                            eventCard = eventDeck.giveEvent()
-                            updateEventView(eventView, eventCard.giveText())
-                            giveCard = Player.useEvent(eventCard)
-                            if giveCard == 'extra':
-                                currentPlayer = currentPlayer-1
-                                giveCard = None
-                            if giveCard is not None:
-                                if currentPlayer == (NUMPLAYERS - 1):
-                                    playerList[0].deck.recieve(giveCard)
-                                else:
-                                    playerList[currentPlayer+1].deck.recieve(giveCard)
-                            if Player.deck.hand[p] == '':
-                                Player.complete += 1
-                            if Player.complete == 3:  # if the player has no destinations left, give them northpole as destination.
-                                Player.deck.hand[0] = "North Pole"
-                            if Player.complete == 4 and Player.location.name == "North Pole":
+                            if Player.location.name == 'North Pole':
                                 pygame.event.post(WIN)
-                            pygame.event.post(EndTurn) # end the player's turn
+                            else:
+                                Player.deck.hand[p] = Player.deck.deck.pop()
+                                Player.deck.checkIfComplete()
+                                eventCard = eventDeck.giveEvent()
+                                updateEventView(eventView, eventCard.giveText())
+                                giveCard = Player.useEvent(eventCard)
+                                if giveCard == 'extra':
+                                    currentPlayer = currentPlayer-1
+                                    giveCard = None
+                                if giveCard is not None:
+                                    if currentPlayer == (NUMPLAYERS - 1):
+                                        playerList[0].deck.recieve(giveCard)
+                                    else:
+                                        playerList[currentPlayer+1].deck.recieve(giveCard)
+
+                                pygame.event.post(EndTurn) # end the player's turn
 
                 if event.attr1 == 'WIN':
                     WinBox = pygame.Surface((800, 600))
@@ -344,16 +349,18 @@ def main(names, deckSize):
                 if event.attr1 == 'ADD':
                     Player.useBonus()
 
-                if not won:
+                if not completed:
                     updateDesButtons(Player, buttonList)
-                updateName(Player, playerNameText)
-                updateRollView(Player, rollView)
+                    updateName(Player, playerNameText)
+                    updateRollView(Player, rollView)
+                    updateComplete(Player)
+                    updatePlusOneButton(Player)
                 updateDestinationView(Player, handView)
-                updateComplete(Player)
-                updatePlusOneButton(Player)
+
 
         if not won:
             pygame_widgets.update(events)
+
 
         if won:
             WonScreen = pygame.Surface((800, 600))
@@ -363,9 +370,9 @@ def main(names, deckSize):
             WonText.draw()
 
             background.blit(WonScreen, (350, 100))
-        pygame.display.update()
+
 
 
 
 if __name__ == "__main__":
-    main(['Sam', '', '', '', 'Jim', ''], 3)
+    main(['Sam', '', '', '', 'Jim', ''], 2)

@@ -15,7 +15,6 @@ class Player:
         self.hasRolled = False
         self.previousLocation = location
         self.preRollCount = 0
-        self.complete = 0
         self.nextTurn = 0
         self.bonus = 0
 
@@ -77,7 +76,7 @@ class Player:
             self.deck.deck.pop()
 
         if event.add is not None:
-            self.deck.deck.add(event.add)
+            self.deck.recieve(event.add)
 
         if event.extra:
             return 'extra'

@@ -26,6 +26,7 @@ class DestinationDeck:
 
 class Hand:
     def __init__(self, deckSize):
+        self.complete = False
         self.hand = []
         self.deck = DestinationDeck(deckSize)
         for i in range(3):
@@ -38,10 +39,17 @@ class Hand:
     def giveDeckLen(self):
         return self.deck.giveLength()
 
-    def recieve(self, destination):
+    def checkIfComplete(self):
         for card in self.hand:
-            if card == '':
-                card = destination
+            if card != '':
+                return False
+        self.hand[0] = "North Pole"
+
+
+    def recieve(self, destination):
+        for i in range(len(self.hand)):
+            if self.hand[i] == '' or self.hand[i] == 'North Pole':
+                self.hand[i] = destination
                 return
         self.deck.add(destination)
 
