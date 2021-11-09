@@ -363,9 +363,9 @@ def main(names, deckSize):
 
 
         if won:
-            WonScreen = pygame.Surface((800, 600))
+            WonScreen = pygame.Surface((800, 400))
             WonScreen.fill((100, 200, 150))
-            WonText = TextBox(WonScreen, 50, 300, 500, 100, fontSize=80, textColour=(20, 120, 120))
+            WonText = TextBox(WonScreen, 50, 75, 700, 150, fontSize=80, textColour=(20, 70, 75))
             WonText.setText(f"{Player.name} WON!")
             WonText.draw()
 
