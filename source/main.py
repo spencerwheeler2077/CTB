@@ -54,9 +54,9 @@ def main(names, deckSize):
     eventDeck = Event.EventDeck()
 
     # setting the control panel up for players.
-    PANEL_X = 845
+    PANEL_X = 830
     PANEL_Y = 5
-    PANEL_LEN = 650
+    PANEL_LEN = 665
     PANEL_HEIGHT = 190
 
     pygame.draw.rect(background, (0, 0, 0), (PANEL_X, PANEL_Y, PANEL_LEN, PANEL_HEIGHT))
@@ -64,7 +64,7 @@ def main(names, deckSize):
 
     buttonX = PANEL_X + 5
     buttonTop = PANEL_Y + 10
-    buttonWidth = 225
+    buttonWidth = 240
     buttonHeight = 30
     buttonDif = 37
     buttonList = []
@@ -140,7 +140,7 @@ def main(names, deckSize):
     def resetButtonFun():
         pygame.event.post(Reset)
 
-    resetButton = Button(background, PANEL_X + buttonWidth - 60, PANEL_Y + PANEL_HEIGHT - 35, 60, 30)
+    resetButton = Button(background, PANEL_X + buttonWidth - 60, PANEL_Y + PANEL_HEIGHT - 35, 70, 30)
     resetButton.setString("Go Back")
     resetButton.setOnClick(resetButtonFun)
 
@@ -149,7 +149,7 @@ def main(names, deckSize):
         pygame.event.post(Complete)
 
 
-    finishButton = Button(background, PANEL_X + buttonWidth + 170, PANEL_Y + PANEL_HEIGHT - 30, 150, 25)
+    finishButton = Button(background, PANEL_X + buttonWidth + 170, PANEL_Y + PANEL_HEIGHT - 40, 175, 35)
     finishButton.setString("Complete Destination")
     finishButton.setOnClick(finishButtonFun)
 
