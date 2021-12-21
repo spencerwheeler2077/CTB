@@ -52,9 +52,10 @@ class Player:
         self.preRollCount = 0
 
     def goBack(self):
-        self.location = self.previousLocation
-        self.rollCount = self.preRollCount
-        self.pawn.move(self.location.adjustedLocation(self.adjustX, self.adjustY))
+        if not self.hasRolled:
+            self.location = self.previousLocation
+            self.rollCount = self.preRollCount
+            self.pawn.move(self.location.adjustedLocation(self.adjustX, self.adjustY))
 
     def useEvent(self, event):
 

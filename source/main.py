@@ -64,7 +64,7 @@ def main(names, deckSize):
 
     buttonX = PANEL_X + 5
     buttonTop = PANEL_Y + 10
-    buttonWidth = 240
+    buttonWidth = 250
     buttonHeight = 30
     buttonDif = 37
     buttonList = []
@@ -80,7 +80,7 @@ def main(names, deckSize):
             pygame.event.post(Event4)
 
     for i in range(4):
-        button = Button(background, buttonX, buttonTop + (buttonDif * i), buttonWidth, buttonHeight, i + 1)
+        button = Button(background, buttonX, buttonTop + (buttonDif * i), buttonWidth, buttonHeight, i + 1, True)
         button.setOnClick(desButtonpost, [button.number])
         buttonList.append(button)
 
@@ -191,8 +191,6 @@ def main(names, deckSize):
         surface.blit(text2, (5, 40))
         surface.blit(text3, (5, 70))
         background.blit(surface, (PANEL_X + PANEL_LEN - 275, PANEL_Y + 15))
-
-        #TODO add the event view here
 
     def updateEventView(surface, textList):
         text1 = textList[0]
@@ -337,6 +335,7 @@ def main(names, deckSize):
                                         playerList[currentPlayer+1].deck.recieve(giveCard)
 
                                 pygame.event.post(EndTurn) # end the player's turn
+                            break
 
                 if event.attr1 == 'WIN':
                     WinBox = pygame.Surface((800, 600))
