@@ -31,6 +31,7 @@ class Player:
     def roll(self):
         if not self.hasRolled:
             self.rollCount = self.rollCount + random.randint(1, 6)
+            self.preRollCount = self.rollCount
             self.hasRolled = True
         else:
             return self.rollCount
@@ -52,7 +53,7 @@ class Player:
         self.preRollCount = 0
 
     def goBack(self):
-        if not self.hasRolled:
+        if self.hasRolled:
             self.location = self.previousLocation
             self.rollCount = self.preRollCount
             self.pawn.move(self.location.adjustedLocation(self.adjustX, self.adjustY))
