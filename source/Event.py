@@ -41,8 +41,6 @@ class EventCard:
     def giveText(self):
         return [self.text1, self.text2]
 
-#  TODO add event card that switches player positions.
-#  TODO add event that skips player's next turn
 
 
 class EventDeck:
